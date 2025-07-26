@@ -1,4 +1,5 @@
 - name: Install docker on docker vms
+  hosts: all
   become: true
   roles:
     - docker_install
