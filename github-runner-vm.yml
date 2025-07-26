@@ -1,5 +1,5 @@
-
 - name: Setup github runners
+  hosts: localhost
   roles:
     - install_ci_packages
     - role: github-runner_install
