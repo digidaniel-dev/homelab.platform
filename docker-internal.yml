@@ -1,4 +1,4 @@
-- name: Configuring/Updating Docker external VM
+- name: Configuring/Updating Docker internal VM
   hosts: localhost
   become: true
   roles:
