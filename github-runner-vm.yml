@@ -1,7 +1,10 @@
 - name: Setup github runners
   hosts: localhost
   roles:
-    - install_ci_packages
-    - role: github-runner_install
+    - role: install_ci_packages
+      tags: install
+
+    - role: github-runner
       vars:
         repo_token: "{{ repo_token }}"
+      tags: install

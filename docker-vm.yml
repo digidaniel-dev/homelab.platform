@@ -1,5 +1,6 @@
-- name: Install docker on docker vms
+- name: Configuring/Updating Docker VM
   hosts: localhost
   become: true
   roles:
-    - docker_install
+    - role: docker
+      tags: install
