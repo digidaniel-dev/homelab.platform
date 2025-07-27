@@ -1,6 +1,5 @@
 - name: Configuring/Updating Docker internal VM
-  hosts: localhost
-  connection: local
+  hosts: local
   become: true
   roles:
     - role: local/docker
