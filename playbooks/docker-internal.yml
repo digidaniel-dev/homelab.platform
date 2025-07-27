@@ -3,5 +3,5 @@
   connection: local
   become: true
   roles:
-    - role: docker
+    - role: local/docker
       tags: install

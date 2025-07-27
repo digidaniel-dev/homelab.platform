@@ -1,3 +1,0 @@
-- name: Configuring/Updating Gitea VM
-  hosts: localhost
-  become: true
