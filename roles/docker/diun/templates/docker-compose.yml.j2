@@ -5,7 +5,7 @@ services:
     image: {{ diun_image }}
     command: serve
     volumes:
-      - "{{ diun_data_dir }}:/data"
+      - "{{ diun_data_path }}:/data"
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
 {% for env_var in diun_env %}
