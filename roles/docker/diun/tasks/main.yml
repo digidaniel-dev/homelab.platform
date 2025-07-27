@@ -1,0 +1,19 @@
+---
+- name: Ensure DIUN directory exists
+  file:
+    path: "{{ docker_compose_dir }}/diun"
+    state: directory
+    recurse: yes
+
+- name: Deploy DIUN docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_compose_dir }}/diun/docker-compose.yml"
+    mode: '0644'
+
+- name: Start DIUN container
+  community.docker.docker_compose:
+    project_src: "{{ docker_compose_dir }}/diun"
+    state: present
+    restarted: yes
+

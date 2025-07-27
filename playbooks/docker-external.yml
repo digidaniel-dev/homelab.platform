@@ -5,3 +5,8 @@
   roles:
     - role: local/docker
       tags: install
+    
+    - role: docker/diun
+      tags:
+        - install
+        - update
