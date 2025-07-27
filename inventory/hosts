@@ -1,8 +1,5 @@
 [local]
 localhost ansible_connection=local
 
-[all-nodes]
+[nodes]
 gryffindor.home.wollbro.se
-
-g.ryffindor.home.wollbro.se
-[main-node]
