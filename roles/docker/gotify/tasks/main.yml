@@ -10,3 +10,4 @@
     db_name: gotify
     db_user: gotify 
     db_password: "Qwerty2593!#"
+    db_root_password: "Qwerty2593!#"
