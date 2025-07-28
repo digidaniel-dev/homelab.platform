@@ -9,3 +9,8 @@
       tags:
         - install
         - update
+
+    - role: docker/gotify
+      tags:
+        - install
+        - update

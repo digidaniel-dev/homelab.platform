@@ -1,0 +1,8 @@
+gotify_image: gotify/server:2.6
+gotify_data_path: /opt/gotify/data
+gotify_external_port: 8080
+gotify_internal_port: 80
+gotify_env:
+  - "TZ=Europe/Stockholm"
+  - "GOTIFY_DEFAULTUSER_PASS=admin"
+
