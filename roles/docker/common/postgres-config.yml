@@ -21,11 +21,21 @@
     login_host: localhost
     login_password: "{{ db_root_password }}"
 
-- name: Ensure {{ db_user }} user has all privileges to {{ db_name }}
+- name: Ensure {{ db_user }} user has all privileges for the database on {{ db_name }}
   community.postgresql.postgresql_privs:
     privs: ALL
     type: database
     role: "{{ db_user }}"
+    login_db: "{{ db_name }}"
+    login_host: localhost
+    login_password: "{{ db_root_password }}"
+
+- name: Ensure {{ db_user }} user has all privileges for schemas on {{ db_name }}
+  community.postgresql.postgresql_privs:
+    privs: ALL
+    type: schema
+    role: "{{ db_user }}"
+    objs: public
     login_db: "{{ db_name }}"
     login_host: localhost
     login_password: "{{ db_root_password }}"
