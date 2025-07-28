@@ -1,0 +1,13 @@
+---
+services:
+  db:
+    image: {{ postgres_image }}
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: {{ postgres_password }}
+    networks:
+      - db
+
+networks:
+  db:
