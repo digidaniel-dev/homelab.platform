@@ -10,3 +10,4 @@ services:
 {% endfor %}
     volumes:
       - "{{ gotify_data_path }}:/app/data"
+    restart: always
