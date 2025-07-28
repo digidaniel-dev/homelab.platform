@@ -4,3 +4,9 @@
   vars:
     service_name: Gotify
 
+- name: Configure Postgres for Gotify
+  include_tasks: ../../common/postgres-config.yml
+  vars:
+    db_name: gotify
+    db_user: gotify 
+    db_password: "Qwerty2593!#"

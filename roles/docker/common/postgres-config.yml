@@ -1,0 +1,13 @@
+- name: Ensure {{ db_name }} database exists
+  community.postgresql.postgresql_db:
+    name: "{{ db_name }}"
+    state: present
+
+- name: Ensure {{ db_user }} user exists
+  community.postgresql.postgresql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    priv: "ALL"
+    db: "{{ db_name }}"
+    state: present
+
