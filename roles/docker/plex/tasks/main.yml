@@ -1,16 +1,6 @@
 ---
-- name: Ensure Plex directory exists
-  file:
-    path: "{{ docker_compose_dir }}/plex"
-    state: directory
-    recurse: yes
-
-- name: Deploy Plex docker-compose
-  template:
-    src: docker-compose.yml.j2
-    dest: "{{ docker_compose_dir }}/plex/docker-compose.yml"
-    mode: '0644'
-
-- name: Start Plex container
-  ansible.builtin.command: docker compose -f {{ docker_compose_dir }}/plex/docker-compose.yml up -d
+- name: Setup Plex container
+  include_tasks: ../../common/docker-compose.yml
+  vars:
+    service_name: Plex
 
