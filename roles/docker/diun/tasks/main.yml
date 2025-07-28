@@ -12,8 +12,5 @@
     mode: '0644'
 
 - name: Start DIUN container
-  community.docker.docker_compose:
-    project_src: "{{ docker_compose_dir }}/diun"
-    state: present
-    restarted: yes
+  ansible.builtin.command: docker compose -f {{ docker_compose_dir }}/diun/docker-compose.yml up -d
 
