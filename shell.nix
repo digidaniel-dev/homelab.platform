@@ -6,5 +6,6 @@ pkgs.mkShell {
     ansible
     nodejs
     sshpass
+    cargo
   ];
 }
