@@ -7,7 +7,7 @@
 - name: Configure Postgres for Gotify
   include_tasks: ../../common/postgres-config.yml
   vars:
-    db_name: gotify
-    db_user: gotify 
-    db_password: "Qwerty2593!#"
-    db_root_password: "Qwerty2593!#"
+    db_name: "{{ gotify_db_name }}"
+    db_user: "{{ gotify_db_user }}"
+    db_password: "{{ gotify_db_pass }}"
+    db_root_password: "{{ gotify_db_root_pass }}"

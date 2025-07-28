@@ -11,3 +11,8 @@ services:
     volumes:
       - "{{ gotify_data_path }}:/app/data"
     restart: always
+
+networks:
+  default:
+    name: db
+    external: true
