@@ -4,3 +4,8 @@
   roles:
     - role: local/docker
       tags: install
+
+    - role: docker/postgres
+      tags:
+        - install
+        - update
