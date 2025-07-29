@@ -1,3 +1,4 @@
+diun_container_name: diun
 diun_image: crazymax/diun:4.29
 diun_data_path: /opt/diun/data
 diun_env:

@@ -1,3 +1,4 @@
+gotify_container_name: gotify
 gotify_image: gotify/server:2.6
 gotify_data_path: /opt/gotify/data
 gotify_external_port: 8080
