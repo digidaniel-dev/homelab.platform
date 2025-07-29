@@ -3,7 +3,6 @@ services:
   plex:
     container_name: {{ plex_container_name }}
     image: {{ plex_image }}
-    container_name: plex
     network_mode: host
     environment:
 {% for env_var in plex_env %}
