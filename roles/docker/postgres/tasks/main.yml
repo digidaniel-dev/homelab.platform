@@ -3,3 +3,7 @@
   include_tasks: ../../common/docker-compose.yml
   vars:
     service_name: Postgres
+
+- name: Mount db backup share
+  include_tasks: ../../common/db-backup-mount.yml
+

@@ -1,0 +1,8 @@
+---
+- name: Mount NFS volume for DB backups
+  ansible.posix.mount:
+    src: 192.168.50.201:/mnt/storage/secure/database_backups
+    path: /mnt/database_backups
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
