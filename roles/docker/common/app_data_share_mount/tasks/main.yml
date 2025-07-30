@@ -1,0 +1,14 @@
+---
+- name: Install required packages
+  apt:
+    name: nfs-common
+    state: present
+    update-cache: true
+
+- name: Mount NFS volume for app data
+  ansible.posix.mount:
+    src: "{{ nas_ip }}:{{ app_data_share }}"
+    path: "{{ app_data_mount_path }}"
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
