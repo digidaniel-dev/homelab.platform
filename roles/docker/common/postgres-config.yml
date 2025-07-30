@@ -1,5 +1,5 @@
 - name: Ensure required Python3 library is installed
-  apt:
+  package:
     name:
       - python3-psycopg2
     state: present

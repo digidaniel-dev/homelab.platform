@@ -4,7 +4,7 @@
     docker_release: "{{ ansible_distribution_release }}"
 
 - name: Install required packages
-  ansible.builtin.apt:
+  package:
     name: "{{ docker_required_packages }}"
     state: present
     update_cache: true
@@ -29,7 +29,7 @@
     state: present
 
 - name: Install Docker packages
-  ansible.builtin.apt:
+  package:
     name: "{{ docker_packages }}"
     state: present
     update_cache: yes

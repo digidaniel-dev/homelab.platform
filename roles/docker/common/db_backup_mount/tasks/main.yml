@@ -1,9 +1,8 @@
 ---
 - name: Install required packages
-  apt:
+  package:
     name: nfs-common
     state: present
-    update-cache: true
 
 - name: Mount NFS volume for DB backups
   ansible.posix.mount:
