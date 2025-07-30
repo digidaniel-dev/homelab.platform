@@ -1,5 +1,6 @@
-- name: Configuring/Updating Docker external VM
-  hosts: local
+- import_playbook: base-playbook.yml
+
+- hosts: local
   become: true
   roles:
     - role: local/docker

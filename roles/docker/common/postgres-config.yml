@@ -3,7 +3,6 @@
     name:
       - python3-psycopg2
     state: present
-    update_cache: true
 
 - name: Ensure {{ db_name }} database exists
   community.postgresql.postgresql_db:
