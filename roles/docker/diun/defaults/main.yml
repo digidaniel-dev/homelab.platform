@@ -1,6 +1,6 @@
 diun_container_name: diun
 diun_image: crazymax/diun:4.29
-diun_data_path: /opt/diun/data
+diun_data_path: "{{ app_data_mount_path }}/{{ ansible_hostname }}/diun/data"
 diun_env:
   - "TZ=Europe/Stockholm"
   - "DIUN_WATCH_WORKERS=20"
