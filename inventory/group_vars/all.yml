@@ -1,1 +1,6 @@
 docker_compose_dir: "/opt/docker"
+nas_ip: 192.168.50.201
+
+# Database backups
+database_backup_share: /mnt/storage/secure/database_backups
+database_backup_mount_path: /mnt/database_backups
