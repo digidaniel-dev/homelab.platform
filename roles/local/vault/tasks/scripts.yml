@@ -1,0 +1,12 @@
+- name: Install Vault backup script
+  copy:
+    src: backup_vault.sh
+    dest: /usr/local/bin/backup_vault.sh
+    mode: '0755'
+
+- name: Install Vault restore script
+  copy:
+    src: restore_vault.sh
+    dest: /usr/local/bin/restore_vault.sh
+    mode: '0755'
+

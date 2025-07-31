@@ -1,0 +1,29 @@
+- name: Check if backup file exists
+  stat:
+    path: /var/backups/vault/latest/vault.backup
+  register: vault_backup
+
+- name: Restore Vault from backup if it exists
+  shell: /usr/local/bin/restore_vault.sh
+  when: vault_backup.stat.exists
+  register: restore_result
+  changed_when: "'restored' in restore_result.stdout"
+
+- name: Initialize Vault if no backup exists
+  shell: |
+    vault operator init -key-shares=5 -key-threshold=3 -format=json > /var/backups/vault/init.json
+    jq -r '.unseal_keys_b64[]' /var/backups/vault/init.json > /var/backups/vault/unseal-keys.txt
+    jq -r '.root_token' /var/backups/vault/init.json > /var/backups/vault/root-token.txt
+  args:
+    executable: /bin/bash
+  when: not vault_backup.stat.exists
+
+- name: Unseal Vault using unseal keys
+  shell: |
+    head -n 3 /var/backups/vault/unseal-keys.txt | while read key; do
+      vault operator unseal "$key"
+    done
+  environment:
+    VAULT_ADDR: http://127.0.0.1:8200
+  changed_when: false
+

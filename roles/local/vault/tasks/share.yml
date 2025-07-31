@@ -1,0 +1,13 @@
+- name: Ensure NFS mount point exists
+  file:
+    path: /mnt/backup-nfs/vault
+    state: directory
+
+- name: Mount NFS share for Vault backups
+  mount:
+    path: /mnt/backup-nfs/vault
+    src: "{{ nas_ip }}:/mnt/storage/secure/apps/vault"
+    fstype: nfs
+    opts: rw
+    state: mounted
+

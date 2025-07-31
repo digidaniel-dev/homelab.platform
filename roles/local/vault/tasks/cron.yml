@@ -1,0 +1,8 @@
+- name: Create cronjob for Vault backup
+  cron:
+    name: "Vault backup"
+    user: root
+    job: "/usr/local/bin/backup_vault.sh"
+    minute: "0"
+    hour: "2"
+

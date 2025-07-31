@@ -1,4 +1,8 @@
 - import_tasks: install.yml
 - import_tasks: config.yml
 - import_tasks: service.yml
+- import_tasks: scripts.yml
+- import_tasks: share.yml
+- import_tasks: init_or_restore.yml
+- import_tasks: cron.yml
 
