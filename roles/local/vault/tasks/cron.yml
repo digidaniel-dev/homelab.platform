@@ -1,3 +1,8 @@
+- name: Ensure required packages exists
+  apt:
+    name: cron
+    state: present
+
 - name: Create cronjob for Vault backup
   cron:
     name: "Vault backup"
