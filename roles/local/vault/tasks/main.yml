@@ -13,7 +13,6 @@
     dest: /usr/share/keyrings/hashicorp-archive-keyring.gpg
     mode: '0644'
   register: hashicorp_key
-  notify: Update apt cache
 
 - name: Get Distro codename
   command: lsb_release -cs
