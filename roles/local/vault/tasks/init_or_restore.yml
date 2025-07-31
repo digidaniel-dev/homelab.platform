@@ -16,6 +16,7 @@
 
 - name: Initialize Vault if no backup exists
   shell: |
+    export VAULT_ADDR=http://127.0.0.1:8200
     vault operator init -key-shares=5 -key-threshold=3 -format=json > /mnt/backup-nfs/vault/init.json
     jq -r '.unseal_keys_b64[]' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/unseal-keys.txt
     jq -r '.root_token' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/root-token.txt
