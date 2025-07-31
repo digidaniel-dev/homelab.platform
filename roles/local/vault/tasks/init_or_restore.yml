@@ -1,6 +1,6 @@
 - name: Check if backup file exists
   stat:
-    path: /var/backups/vault/latest/vault.backup
+    path: /mnt/backup-nfs/vault/latest/vault.backup
   register: vault_backup
 
 - name: Restore Vault from backup if it exists
@@ -11,16 +11,16 @@
 
 - name: Initialize Vault if no backup exists
   shell: |
-    vault operator init -key-shares=5 -key-threshold=3 -format=json > /var/backups/vault/init.json
-    jq -r '.unseal_keys_b64[]' /var/backups/vault/init.json > /var/backups/vault/unseal-keys.txt
-    jq -r '.root_token' /var/backups/vault/init.json > /var/backups/vault/root-token.txt
+    vault operator init -key-shares=5 -key-threshold=3 -format=json > /mnt/backup-nfs/vault/init.json
+    jq -r '.unseal_keys_b64[]' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/unseal-keys.txt
+    jq -r '.root_token' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/root-token.txt
   args:
     executable: /bin/bash
   when: not vault_backup.stat.exists
 
 - name: Unseal Vault using unseal keys
   shell: |
-    head -n 3 /var/backups/vault/unseal-keys.txt | while read key; do
+    head -n 3 /mnt/backup-nfs/vault/unseal-keys.txt | while read key; do
       vault operator unseal "$key"
     done
   environment:
