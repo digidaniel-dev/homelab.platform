@@ -1,3 +1,8 @@
+- name: Ensure required packages exists
+  apt:
+    name: jq
+    state: present
+
 - name: Check if backup file exists
   stat:
     path: /mnt/backup-nfs/vault/latest/vault.backup
