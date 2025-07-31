@@ -4,3 +4,4 @@
   become: true
   roles:
     - role: local/vault
+      tags: install
