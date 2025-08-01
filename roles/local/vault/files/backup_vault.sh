@@ -10,6 +10,7 @@ TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
 BACKUP_FILE="${BACKUP_DIR}/vault_backup_${TIMESTAMP}.snap"
 LATEST_SYMLINK="${BACKUP_DIR}/latest.snap"
 LOG_FILE="/var/log/backup_vault.log"
+VAULT_TOKEN=$(cat /mnt/backup-nfs/vault/root-token.txt)
 
 # Control that VAULT_TOKEN exists
 if [[ -z "${VAULT_TOKEN:-}" ]]; then

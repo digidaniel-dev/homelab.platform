@@ -20,6 +20,8 @@
     vault operator init -key-shares=5 -key-threshold=3 -format=json > /mnt/backup-nfs/vault/init.json
     jq -r '.unseal_keys_b64[]' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/unseal-keys.txt
     jq -r '.root_token' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/root-token.txt
+    chmod 600 /mnt/backup-nfs/vault/unseal-keys.txt
+    chmod 600 /mnt/backup-nfs/vault/root-token.txt
   args:
     executable: /bin/bash
   when: not vault_backup.stat.exists
