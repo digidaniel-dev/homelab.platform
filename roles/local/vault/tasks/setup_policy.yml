@@ -1,0 +1,16 @@
+- name: Upload Vault policy template
+  template:
+    src: vault_policy_snapshot.hcl.j2
+    dest: /etc/vault/policies/snapshot.hcl
+    owner: vault
+    group: vault
+    mode: '0644'
+
+- name: Apply Vault policy for snapshot access
+  command: >
+    vault policy write snapshot /etc/vault/policies/snapshot.hcl
+  environment:
+    VAULT_ADDR: "http://127.0.0.1:8200"
+    VAULT_TOKEN: "{{ vault_root_token }}"
+  when: vault_root_token is defined
+

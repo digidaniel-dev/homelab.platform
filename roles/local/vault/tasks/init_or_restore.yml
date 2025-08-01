@@ -22,6 +22,7 @@
     jq -r '.root_token' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/root-token.txt
     chmod 600 /mnt/backup-nfs/vault/unseal-keys.txt
     chmod 600 /mnt/backup-nfs/vault/root-token.txt
+    export VAULT_TOKEN=$(cat /mnt/backup-nfs/vault/root-token.txt)
   args:
     executable: /bin/bash
   when: not vault_backup.stat.exists
