@@ -1,14 +1,24 @@
+- name: Create config and data directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: vault
+    group: vault
+    mode: '0750'
+  loop:
+    - /etc/vault.d/policies
+
 - name: Upload Vault policy template
   template:
     src: vault_policy_snapshot.hcl.j2
-    dest: /etc/vault/policies/snapshot.hcl
+    dest: /etc/vault.d/policies/snapshot.hcl
     owner: vault
     group: vault
     mode: '0644'
 
 - name: Apply Vault policy for snapshot access
   command: >
-    vault policy write snapshot /etc/vault/policies/snapshot.hcl
+    vault policy write snapshot /etc/vault.d/policies/snapshot.hcl
   environment:
     VAULT_ADDR: "http://127.0.0.1:8200"
     VAULT_TOKEN: "{{ vault_root_token }}"
