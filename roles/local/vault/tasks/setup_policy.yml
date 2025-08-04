@@ -19,8 +19,4 @@
 - name: Apply Vault policy for snapshot access
   command: >
     vault policy write snapshot /etc/vault.d/policies/snapshot.hcl
-  environment:
-    VAULT_ADDR: "http://127.0.0.1:8200"
-    VAULT_TOKEN: "{{ vault_root_token }}"
-  when: vault_root_token is defined
 
