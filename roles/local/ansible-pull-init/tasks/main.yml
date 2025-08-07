@@ -1,5 +1,0 @@
----
-- name: Update package manager cache
-  package:
-    update_cache: yes
-
