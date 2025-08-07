@@ -3,5 +3,5 @@
 - hosts: local
   become: true
   roles:
-    - role: local/docker
+    - role: docker
       tags: install

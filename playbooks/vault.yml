@@ -3,5 +3,5 @@
 - hosts: local
   become: true
   roles:
-    - role: local/vault
+    - role: vault
       tags: install
