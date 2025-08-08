@@ -1,0 +1,13 @@
+- name: Setup {{ service_name }} ansible-pull service
+  template:
+    src: ansible-pull.service.j2
+    dest: "/lib/systemd/system/{{ service_name }}.service"
+    mode: 644
+  notify:
+    - reload systemctl
+
+- name: Start {{ service_name }} ansible-pull service
+  service:
+    name: "{{ service_name }}.service"
+    state: started
+    enabled: yes
