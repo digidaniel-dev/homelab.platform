@@ -5,8 +5,14 @@
       - postgresql-contrib
     state: present
 
+- name: Add custom PostgreSQL config file
+  copy:
+    src: postgresql.conf
+    dest: /etc/postgresql/15/main/postgresql.conf
+    mode: '0644'
+
 - name: Make sure PostgreSQL is started and enabled
   service:
     name: "postgresql"
-    state: started
+    state: restart
     enabled: yes
