@@ -1,0 +1,12 @@
+- name: Setup PostgreSQL
+  package:
+    name:
+      - postgresql
+      - postgresql-contrib
+    state: present
+
+- name: Make sure PostgreSQL is started and enabled
+  service:
+    name: "postgresql"
+    state: started
+    enabled: yes
