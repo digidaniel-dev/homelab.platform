@@ -1,6 +1,6 @@
 - name: Install Vault backup script
-  copy:
-    src: backup_vault.sh
+  template:
+    src: backup_vault.sh.j2
     dest: /usr/local/bin/backup_vault.sh
     mode: '0755'
 

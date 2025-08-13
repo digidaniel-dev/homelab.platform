@@ -8,13 +8,19 @@
     state: present
     update_cache: yes
 
+- name: Check if Hashicorp Keyring already exists
+  stat:
+    path: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  register: keyring
+
 - name: Download and install HashiCorp GPG key
   shell: |
-    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg 
   args:
     executable: /bin/bash
   become: yes
   changed_when: true
+  when: not keyring.stat.exists
 
 - name: Get Distro codename
   command: lsb_release -cs

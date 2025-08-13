@@ -1,6 +1,4 @@
-- import_playbook: base-playbook.yml
-
-- hosts: local
+- hosts: vault
   become: true
   roles:
     - role: vault

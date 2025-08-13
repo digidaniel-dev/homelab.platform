@@ -3,9 +3,25 @@
     name: jq
     state: present
 
+- name: Check if already initialized
+  shell: vault status --format=json | jq .initialized
+  register: init_result
+
+- name: Initialize Vault if no backup exists
+  shell: |
+    vault operator init -key-shares=5 -key-threshold=3 -format=json > {{ backup_dir }}/{{ init_file }}
+    jq -r '.unseal_keys_b64[]' {{ backup_dir }}/{{ init_file }} > {{ backup_dir }}/{{ unseal_keys_file }}
+    jq -r '.root_token' {{ backup_dir }}/{{ init_file }} > {{ backup_dir }}/{{ root_token_file }}
+    chmod 600 {{ backup_dir }}/{{ init_file }}
+    chmod 600 {{ backup_dir }}/{{ unseal_keys_file }}
+    chmod 600 {{ backup_dir }}/{{ root_token_file }}
+  args:
+    executable: /bin/bash
+  when: not (init_result.stdout | bool)
+
 - name: Check if backup file exists
   stat:
-    path: /mnt/backup-nfs/vault/latest/vault.backup
+    path: "{{ backup_dir }}/latest/vault.backup"
   register: vault_backup
 
 - name: Restore Vault from backup if it exists
@@ -14,25 +30,15 @@
   register: restore_result
   changed_when: "'restored' in restore_result.stdout"
 
-- name: Initialize Vault if no backup exists
-  shell: |
-    export VAULT_ADDR=http://127.0.0.1:8200
-    vault operator init -key-shares=5 -key-threshold=3 -format=json > /mnt/backup-nfs/vault/init.json
-    jq -r '.unseal_keys_b64[]' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/unseal-keys.txt
-    jq -r '.root_token' /mnt/backup-nfs/vault/init.json > /mnt/backup-nfs/vault/root-token.txt
-    chmod 600 /mnt/backup-nfs/vault/unseal-keys.txt
-    chmod 600 /mnt/backup-nfs/vault/root-token.txt
-    export VAULT_TOKEN=$(cat /mnt/backup-nfs/vault/root-token.txt)
-  args:
-    executable: /bin/bash
-  when: not vault_backup.stat.exists
+- name: Check of sealed
+  shell: vault status --format=json | jq .sealed
+  register: sealed_result
 
 - name: Unseal Vault using unseal keys
   shell: |
-    head -n 3 /mnt/backup-nfs/vault/unseal-keys.txt | while read key; do
+    head -n 3 {{ backup_dir }}/{{ unseal_keys_file }} | while read key; do
       vault operator unseal "$key"
     done
-  environment:
-    VAULT_ADDR: http://127.0.0.1:8200
+  when: sealed_result.stdout | bool
   changed_when: false
 

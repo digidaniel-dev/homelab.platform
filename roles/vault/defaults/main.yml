@@ -1,0 +1,7 @@
+vault_ip: vault.home.wollbro.se
+backup_dir: "/mnt/backup-nfs/vault"
+init_file: "init.json"
+root_token_file: "root-token.txt"
+unseal_keys_file: "unseal-keys.txt"
+approle_id_file: "approle-id.txt"
+approle_secret_file: "approle-secret.txt"

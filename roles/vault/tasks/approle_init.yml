@@ -1,0 +1,51 @@
+---
+- name: List enabled authentication modes
+  shell: vault auth list
+  register: auth_list
+
+- name: Enable approle
+  shell: vault auth enable approle
+  when: "'approle' not in auth_list.stdout"
+
+- name: Create role
+  shell: vault write auth/approle/role/backup \
+    token_type=batch \
+    secret_id_ttl=10m \
+    token_ttl=20m \
+    token_max_ttl=30m \
+    secret_id_num_uses=40
+
+- name: Save approle id
+  shell: vault read auth/approle/role/backup/role-id --format=json | jq .data.role_id > {{ backup_dir }}/{{ approle_id_file }}
+
+- name: Fetch approle id
+  fetch:
+    src: "{{ backup_dir }}/{{ approle_id_file }}"
+    dest: "/tmp/"
+    flat: yes
+    fail_on_missing: false
+
+- name: Read approle id to variable
+  set_fact:
+    approle_id: "{{ lookup('file', '/tmp/{{ approle_id_file }}') }}"
+  no_log: true
+
+- name: Save approle secret
+  shell: vault write -f auth/approle/role/backup/secret-id --format=json | jq .data.secret_id > {{ backup_dir }}/{{ approle_secret_file }}
+
+- name: Fetch approle secret
+  fetch:
+    src: "{{ backup_dir }}/{{ approle_secret_file }}"
+    dest: "/tmp/"
+    flat: yes
+    fail_on_missing: false
+
+- name: Read approle secret to variable
+  set_fact:
+    approle_secret: "{{ lookup('file', '/tmp/{{ approle_secret_file }}') }}"
+  no_log: true
+
+- name: Login with approle
+  shell: vault write -field=token auth/approle/login role_id="{{ approle_id }}" secret_id="{{ approle_secret }}"
+  register: approle_token
+

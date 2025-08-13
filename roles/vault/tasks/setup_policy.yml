@@ -20,3 +20,8 @@
   command: >
     vault policy write snapshot /etc/vault.d/policies/snapshot.hcl
 
+- name: Applt Vault policy snapshot to approle
+  command: >
+    vault write auth/approle/role/backup \
+      token_policies="snapshot"
+
