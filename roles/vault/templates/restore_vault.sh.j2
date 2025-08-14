@@ -1,11 +1,13 @@
 #!/bin/bash
-set -e
+
+set -euo pipefail
 
 LOG_FILE="/var/log/restore_vault.log"
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+APPROLE_TOKEN="{{approle_token.stdout}}"
 
-if [ -f /mnt/nfs/vault_backups/latest.snap ]; then
-  vault operator raft snapshot restore /mnt/nfs/vault_backups/latest.snap
+if [ -f "{{ backup_dir }}/latest.snap" ]; then
+  vault operator raft snapshot restore "{{ backup_dir }}/latest.snap"
   echo "[$TIMESTAMP] Backup restored" > $LOG_FILE
 else
   echo "[$TIMESTAMP] No backup found" > $LOG_FILE
