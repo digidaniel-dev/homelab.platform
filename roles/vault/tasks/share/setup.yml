@@ -1,3 +1,4 @@
+---
 - name: Ensure required packages exists
   apt:
     name: nfs-common
@@ -5,13 +6,13 @@
 
 - name: Ensure NFS mount point exists
   file:
-    path: /mnt/backup-nfs/vault
+    path: "{{ backup_dir }}"
     state: directory
 
 - name: Mount NFS share for Vault backups
   mount:
-    path: /mnt/backup-nfs/vault
-    src: "{{ nas_ip }}:/mnt/storage/secure/apps/vault"
+    path: "{{ backup_dir }}"
+    src: "{{ nas_ip }}:{{ nfs_share }}"
     fstype: nfs
     opts: rw
     state: mounted

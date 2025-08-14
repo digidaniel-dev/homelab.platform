@@ -1,7 +1,14 @@
+---
 - name: Ensure required packages exists
   apt:
     name: cron
     state: present
+
+- name: Install Vault backup script
+  template:
+    src: backup_vault.sh.j2
+    dest: /usr/local/bin/backup_vault.sh
+    mode: '0755'
 
 - name: Create cronjob for Vault backup
   cron:

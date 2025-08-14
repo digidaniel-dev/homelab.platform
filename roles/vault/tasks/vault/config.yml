@@ -1,3 +1,4 @@
+---
 - name: Create config and data directories
   file:
     path: "{{ item }}"

@@ -1,24 +1,32 @@
 ---
 - name: Vault setup
   block:
+    # Preparation
+    - import_tasks: share/setup.yml
+    - import_tasks: restore/script.yml
+
     # Installation
-    - import_tasks: install.yml
-    - import_tasks: config.yml
-    - import_tasks: service.yml
-    - import_tasks: share.yml
-    - import_tasks: init_or_restore.yml
+    - import_tasks: vault/install.yml
+    - import_tasks: vault/config.yml
+    - import_tasks: vault/service.yml
+    - import_tasks: vault/init.yml
+    - import_tasks: vault/restore.yml
+    - import_tasks: vault/unseal.yml
 
     # Configuration
-    - import_tasks: read_data.yml
-    - import_tasks: approle_init.yml
+    - import_tasks: vault/read_data.yml
+    - import_tasks: approle/init.yml
       environment:
         VAULT_TOKEN: "{{ vault_root_token }}"
-    - import_tasks: setup_policy.yml
+    - import_tasks: approle/store_data.yml
       environment:
         VAULT_TOKEN: "{{ vault_root_token }}"
-    - import_tasks: scripts.yml
+    - import_tasks: approle/setup_policy.yml
       environment:
-        VAULT_TOKEN: "{{ approle_token.stdout }}"
-    - import_tasks: cron.yml
+        VAULT_TOKEN: "{{ vault_root_token }}"
+    - import_tasks: approle/login.yml
+
+    # Setup backup job
+    - import_tasks: backup/cron.yml
   environment:
     VAULT_ADDR: "http://{{ vault_ip }}:8200"

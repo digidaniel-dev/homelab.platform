@@ -1,0 +1,17 @@
+---
+- name: List enabled authentication modes
+  shell: vault auth list
+  register: auth_list
+
+- name: Enable approle
+  shell: vault auth enable approle
+  when: "'approle' not in auth_list.stdout"
+
+- name: Create role
+  shell: vault write auth/approle/role/backup \
+    token_type=batch \
+    secret_id_ttl=10m \
+    token_ttl=20m \
+    token_max_ttl=30m \
+    secret_id_num_uses=40
+
