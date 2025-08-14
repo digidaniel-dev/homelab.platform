@@ -1,30 +1,41 @@
 ---
-- name: Save approle id
-  shell: vault read auth/approle/role/backup/role-id --format=json | jq .data.role_id > {{ backup_dir }}/{{ approle_id_file }}
+- name: Ensure role_id is saved locally
+  block:
+    - name: Read current role_id from Vault
+      shell: vault read -field=role_id -format=json auth/approle/role/backup/role-id
+      register: role_id_result
+      changed_when: false
+      retries: 5
+      delay: 2
+      until: role_id_result.rc == 0
 
-- name: Fetch approle id
-  fetch:
-    src: "{{ backup_dir }}/{{ approle_id_file }}"
-    dest: "/tmp/"
-    flat: yes
-    fail_on_missing: false
+    - name: Save role_id to local file if missing or changed
+      copy:
+        content: "{{ role_id_result.stdout }}"
+        dest: "{{ host_dir }}/{{ approle_id_file }}"
+      when: not lookup('file', host_dir + '/' + approle_id_file, errors='ignore') is defined or
+            lookup('file', host_dir + '/' + approle_id_file, errors='ignore') != role_id_result.stdout
 
-- name: Read approle id to variable
-  set_fact:
-    approle_id: "{{ lookup('file', '/tmp/{{ approle_id_file }}') }}"
-  no_log: true
+    - name: Set fact for role_id
+      set_fact:
+        approle_id: "{{ role_id_result.stdout }}"
+      no_log: true
 
-- name: Save approle secret
-  shell: vault write -f auth/approle/role/backup/secret-id --format=json | jq .data.secret_id > {{ backup_dir }}/{{ approle_secret_file }}
+- name: Generate new secret_id
+  block:
+    - name: Write new secret_id
+      shell: vault write -f -field=secret_id auth/approle/role/backup/secret-id
+      register: secret_id_result
+      changed_when: true
 
-- name: Fetch approle secret
-  fetch:
-    src: "{{ backup_dir }}/{{ approle_secret_file }}"
-    dest: "/tmp/"
-    flat: yes
-    fail_on_missing: false
+    - name: Save secret_id locally
+      copy:
+        content: "{{ secret_id_result.stdout }}"
+        dest: "{{ host_dir }}/{{ approle_secret_file }}"
+      no_log: true
 
-- name: Read approle secret to variable
-  set_fact:
-    approle_secret: "{{ lookup('file', '/tmp/{{ approle_secret_file }}') }}"
-  no_log: true
+    - name: Set fact for secret_id
+      set_fact:
+        approle_secret: "{{ secret_id_result.stdout }}"
+      no_log: true
+

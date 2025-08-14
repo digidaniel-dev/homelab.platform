@@ -1,7 +1,7 @@
 ---
 - name: Install Vault restore script
-  copy:
-    src: restore_vault.sh
+  template:
+    src: restore_vault.sh.j2
     dest: /usr/local/bin/restore_vault.sh
     mode: '0755'
 

@@ -3,18 +3,16 @@
   block:
     # Preparation
     - import_tasks: share/setup.yml
-    - import_tasks: restore/script.yml
 
     # Installation
     - import_tasks: vault/install.yml
     - import_tasks: vault/config.yml
     - import_tasks: vault/service.yml
     - import_tasks: vault/init.yml
-    - import_tasks: vault/restore.yml
     - import_tasks: vault/unseal.yml
+    - import_tasks: vault/read_data.yml
 
     # Configuration
-    - import_tasks: vault/read_data.yml
     - import_tasks: approle/init.yml
       environment:
         VAULT_TOKEN: "{{ vault_root_token }}"
@@ -25,6 +23,12 @@
       environment:
         VAULT_TOKEN: "{{ vault_root_token }}"
     - import_tasks: approle/login.yml
+
+    # Restore
+    - import_tasks: restore/script.yml
+    - import_tasks: vault/restore.yml
+      environment:
+        VAULT_TOKEN: "{{ vault_root_token }}"
 
     # Setup backup job
     - import_tasks: backup/cron.yml
