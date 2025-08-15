@@ -24,7 +24,6 @@
     chmod 600 {{ backup_dir }}/{{ root_token_file }}
   args:
     executable: /bin/bash
-  register: vault_initialized
   when:
     - not (init_result.stdout | bool)
     - not vault_backup.stat.exists
